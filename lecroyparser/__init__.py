@@ -23,7 +23,7 @@ import glob
 
 
 class ScopeData(object):
-    def __init__(self, path, parseAll = False, sparse = -1):
+    def __init__(self, file, sparse = -1):
         """Import Scopedata as stored under path.
 
         If parseAll is set to true, search for all files 
@@ -33,29 +33,16 @@ class ScopeData(object):
         be stored in x and y. These will be sampled evenly from all data points in 
         the source file. This can speed up data processing and plotting."""
 
-        
-        self.path = path
-
-        if parseAll:
-            basePath = "/".join(path.split("/")[:-1])
-            core_filename = path.split("/")[-1][2:]
-
-            files = sorted(list( glob.iglob(basePath + "/C*" + core_filename)))
-
-            self.y = []
-            for f in files:
-                x, y = self.parseFile(f, sparse = sparse)
-                self.x = x
-                self.y.append(y)
-                
-        else:
-            x, y = self.parseFile(path, sparse = sparse)
-            self.x = x
-            self.y = y
+        x, y = self.parseFile(file, sparse = sparse)
+        self.x = x
+        self.y = y
 
         
-    def parseFile(self, path, sparse = -1):
-        self.file = open(path, mode='rb')
+    def parseFile(self, file, sparse = -1):
+        if isinstance(file, str)
+            self.file = open(path, mode='rb')
+        else
+            self.file = file
         self.endianness = "<"
         
         fileContent = self.file.read()
@@ -198,7 +185,6 @@ class ScopeData(object):
            
     def __repr__(self):
         string = "Le Croy Scope Data\n"
-        string += "Path: " + self.path + "\n"
         string += "Endianness: " + self.endianness + "\n"
         string += "Instrument: " + self.instrumentName + "\n"
         string += "Instrument Number: " + str(self.instrumentNumber) + "\n"
